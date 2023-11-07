@@ -1,0 +1,26 @@
+name: change avatar
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+  schedule:
+    - cron: 0 1 4,22 * *
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v3
+    - name: set up python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: set up environment variables
+      run: |
+        echo "BSKY_APP_PASSWORD=${{ secrets.BSKY_APP_PASSWORD }}" >> $GITHUB_ENV
+        echo "BSKY_HANDLE=${{ secrets.BSKY_HANDLE }}" >> $GITHUB_ENV
+    - name: install dependencies
+      run: pip install atproto
+    - name: change avatar
+      run: cd change-avatar && for i in {1..5}; do python change_avi.py && break || sleep 15; done # retries 5 times on fail
