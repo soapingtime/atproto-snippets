@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   repository_dispatch:
   schedule:
-    - cron: 0 1 4,22 * *
+    - cron: "0 1 4,22 * *"
 jobs:
   post:
     runs-on: ubuntu-latest
@@ -23,4 +23,4 @@ jobs:
     - name: install dependencies
       run: pip install atproto
     - name: change avatar
-      run: cd change-avatar && for i in {1..5}; do python change_avi.py && break || sleep 15; done # retries 5 times on fail
+      run: cd change-avatar && python change_avi.py
